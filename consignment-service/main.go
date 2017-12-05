@@ -6,7 +6,7 @@ import (
 	"net"
 
 	// Import the generated protobuf code
-	pb "github.com/ewanvalentine/shipper/consignment-service/proto/consignment"
+	pb "github.com/robbawebba/shipper/consignment-service/proto/consignment"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -18,7 +18,7 @@ const (
 
 type IRepository interface {
 	Create(*pb.Consignment) (*pb.Consignment, error)
-	GetAll() []*pb.Consignment
+	GetAll() ([]*pb.Consignment, error)
 }
 
 // Repository - Dummy repository, this simulates the use of a datastore
@@ -32,8 +32,8 @@ func (repo *Repository) Create(consignment *pb.Consignment) (*pb.Consignment, er
 	repo.consignments = updated
 	return consignment, nil
 }
-func (repo *Repository) GetAll() []*pb.Consignment {
-	return repo.consignments
+func (repo *Repository) GetAll() ([]*pb.Consignment, error) {
+	return repo.consignments, nil
 }
 
 // Service should implement all of the methods to satisfy the service
@@ -63,7 +63,7 @@ func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment) (*
 func (s *service) GetConsignments(ctx context.Context, req *pb.GetRequest) (*pb.Response, error) {
 
 	// Save our consignment
-	consignments := s.repo.GetAll()
+	consignments, err := s.repo.GetAll()
 	if err != nil {
 		return nil, err
 	}
