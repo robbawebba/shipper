@@ -8,13 +8,13 @@ import (
 	"os"
 	"os/exec"
 
-	pb "github.com/ewanvalentine/shipper/consignment-service/proto/consignment"
+	pb "github.com/robbawebba/shipper/consignment-service/proto/consignment"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
 const (
-	address         = "localhost:50051"
+	address         = "localhost:4000"
 	defaultFilename = "consignment.json"
 )
 
